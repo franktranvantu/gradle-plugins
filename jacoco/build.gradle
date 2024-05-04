@@ -29,7 +29,7 @@ jacocoTestReport {
                     "com/franktranvantu/jacoco/domain/**",
                     "com/franktranvantu/**/ExcludedPOJO.class",
                     "com/franktranvantu/**/*DTO.*",
-                    "**/config/*"
+                    "**/franktranvantu/*"
             ])
         }))
     }
