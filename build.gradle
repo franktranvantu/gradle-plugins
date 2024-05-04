@@ -1,14 +1,6 @@
-plugins {
-    id 'java'
-}
-
 group = 'com.franktranvantu'
 version = '1.0.0'
 
-repositories {
-    mavenCentral()
-}
-
-test {
-    useJUnitPlatform()
+subprojects {
+    apply(plugin: 'java')
 }
