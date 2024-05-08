@@ -1,0 +1,133 @@
+task printSourceSetInformation() {
+    doLast {
+        sourceSets.each { srcSet ->
+            println "${srcSet.name}"
+            def allJava = srcSet.allJava
+            println "\t${allJava.name}:"
+            println "\t\tsrcDirs: ${allJava.srcDirs}"
+            println "\t\tsourceDirectories:"
+
+            def sourceDirectories = allJava.sourceDirectories
+            println "\t\t\tsingleFile: ${sourceDirectories.singleFile}"
+
+            def sourceDirectoriesFiles = sourceDirectories.files
+            println "\t\t\tfiles: ${sourceDirectoriesFiles}"
+            sourceDirectoriesFiles.each {file ->
+                println "\t\t\t\tfile:"
+                println "\t\t\t\t\tname: ${file.name}"
+                println "\t\t\t\t\tparent: ${file.parent}"
+                println "\t\t\t\t\tparentFile: ${file.parentFile}"
+                println "\t\t\t\t\tpath: ${file.path}"
+                println "\t\t\t\t\tisAbsolute: ${file.absolute}"
+                println "\t\t\t\t\tabsolutePath: ${file.absolutePath}"
+                println "\t\t\t\t\tabsoluteFile: ${file.absoluteFile}"
+                println "\t\t\t\t\tcanonicalPath: ${file.canonicalPath}"
+                println "\t\t\t\t\tcanonicalFile: ${file.canonicalFile}"
+                println "\t\t\t\t\tisDirectory: ${file.directory}"
+                println "\t\t\t\t\tisFile: ${file.file}"
+                println "\t\t\t\t\tisHidden: ${file.hidden}"
+            }
+            println "\t\t\tasPath: ${sourceDirectories.asPath}"
+            println "\t\t\tasFileTree: ${sourceDirectories.asFileTree}"
+            println "\t\t\t\tfiles: ${sourceDirectories.asFileTree.files}"
+            println "\t\t\telements: ${sourceDirectories.elements}"
+
+            def srcDirTrees = allJava.srcDirTrees
+            println "\t\tsrcDirTrees: ${srcDirTrees}"
+            println "\t\t\tdir: ${srcDirTrees.dir}"
+            println "\t\t\tpatterns: ${srcDirTrees.patterns}"
+
+            def filter = allJava.filter
+            println "\t\tfilter: ${filter}"
+            println "\t\t\tincludes: ${filter.includes}"
+            println "\t\t\texcludes: ${filter.excludes}"
+
+            def destinationDirectory = allJava.destinationDirectory
+            println "\t\tdestinationDirectory: ${ destinationDirectory}"
+            println "\t\t\tasFileTree: ${destinationDirectory.asFileTree}"
+            println "\t\tclassesDirectory: ${allJava.classesDirectory}"
+
+            def allSource = srcSet.allSource
+            println "\t${allSource.name}:"
+
+            def srcDirsFiles = allSource.srcDirs
+            println "\t\tsrcDirs: ${srcDirsFiles}"
+            srcDirsFiles.each { file ->
+                println "\t\t\tfile:"
+                println "\t\t\t\tname: ${file.name}"
+                println "\t\t\t\tparent: ${file.parent}"
+                println "\t\t\t\tparentFile: ${file.parentFile}"
+                println "\t\t\t\tpath: ${file.path}"
+                println "\t\t\t\tisAbsolute: ${file.absolute}"
+                println "\t\t\t\tabsolutePath: ${file.absolutePath}"
+                println "\t\t\t\tabsoluteFile: ${file.absoluteFile}"
+                println "\t\t\t\tcanonicalPath: ${file.canonicalPath}"
+                println "\t\t\t\tcanonicalFile: ${file.canonicalFile}"
+                println "\t\t\t\tisDirectory: ${file.directory}"
+                println "\t\t\t\tisFile: ${file.file}"
+                println "\t\t\t\tisHidden: ${file.hidden}"
+            }
+            println "\t\tsourceDirectories: ${allSource.sourceDirectories}"
+        }
+    }
+}
+
+task printSourceSets {
+    doLast {
+        def outputFile = file("${buildDir}/sourceSets.html")
+        outputFile.parentFile.mkdirs()
+
+        def output = new StringBuilder()
+        output.append("<html><head><title>SourceSets Information</title></head><body>")
+        output.append("<h1>SourceSets Information</h1>")
+
+        output.append("<script>")
+        output.append("function toggleList(listId) {")
+        output.append("var list = document.getElementById(listId);")
+        output.append("if (list.style.display === 'none') {")
+        output.append("list.style.display = 'block';")
+        output.append("} else {")
+        output.append("list.style.display = 'none';")
+        output.append("}")
+        output.append("}")
+        output.append("</script>")
+
+        output.append("<ul>")
+
+        sourceSets.each { sourceSet ->
+            output.append("<li><a href='javascript:toggleList(\"${sourceSet.name}\");'>${sourceSet.name}</a>")
+            output.append("<ul id='${sourceSet.name}' style='display: none;'>")
+            outputSourceSetInfo(sourceSet, output, "    ")
+            output.append("</ul>")
+            output.append("</li>")
+        }
+
+        output.append("</ul>")
+        output.append("</body></html>")
+
+        outputFile.text = output.toString()
+        println "SourceSets information exported to: ${outputFile}"
+    }
+}
+
+def outputSourceSetInfo(sourceSet, output, indent) {
+    sourceSet.properties.each { key, value ->
+        output.append("<li>${key}: ")
+        if (value instanceof Iterable) {
+            output.append("<ul>")
+            value.each { subValue ->
+                output.append("<li>${subValue}</li>")
+            }
+            output.append("</ul>")
+        } else if (value instanceof Map) {
+            output.append("<ul>")
+            value.each { subKey, subValue ->
+                output.append("<li>${subKey}: ${subValue}</li>")
+            }
+            output.append("</ul>")
+        } else {
+            output.append("${value}")
+        }
+        output.append("</li>")
+    }
+}

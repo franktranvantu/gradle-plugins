@@ -18,4 +18,5 @@ include 'java-test-fixtures'
 include 'spring-boot'
 include 'antlr'
 include 'license-gradle-plugin'
+include 'source-sets'
 
