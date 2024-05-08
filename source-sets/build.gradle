@@ -1,3 +1,7 @@
+plugins {
+    id 'groovy'
+}
+
 task printSourceSetInformation() {
     doLast {
         sourceSets.each { srcSet ->
@@ -129,5 +133,154 @@ def outputSourceSetInfo(sourceSet, output, indent) {
             output.append("${value}")
         }
         output.append("</li>")
+    }
+}
+
+task listAllSourceSets {
+    doLast {
+        sourceSets.each {sourceSet ->
+            println sourceSet.name
+        }
+    }
+}
+
+task listAllSourceOfMain {
+    doLast {
+        def main = sourceSets[0]
+        main.allSource.each {file ->
+            println file.name
+        }
+    }
+}
+
+task listAllJavaOfMain {
+    doLast {
+        def main = sourceSets[0]
+        main.allJava.each {file ->
+            println file.name
+        }
+    }
+}
+
+task listOnlyJavaOfMain {
+    doLast {
+        def main = sourceSets[0]
+        main.java.each {file ->
+            println file.name
+        }
+    }
+}
+
+task listAllResourcesOfMain {
+    doLast {
+        def main = sourceSets[0]
+        main.resources.each {file ->
+            println file.name
+        }
+    }
+}
+
+task listAllSourceOfTest {
+    doLast {
+        def main = sourceSets[1];
+        main.allSource.each {file ->
+            println file.name
+        }
+    }
+}
+
+task listAllJavaOfTest {
+    doLast {
+        def main = sourceSets[1];
+        main.allSource.each {file ->
+            println file.name
+        }
+    }
+}
+
+task listAllResourcesOfTest {
+    doLast {
+        def main = sourceSets[1]
+        main.resources.each {file ->
+            println file.name
+        }
+    }
+}
+
+task printBuildDir {
+    doLast {
+        println buildDir
+    }
+}
+
+task printRootProject {
+    doLast {
+        println rootProject
+    }
+}
+
+task printRootDir {
+    doLast {
+        println rootDir
+    }
+}
+
+task printBuildFile {
+    doLast {
+        println buildFile
+    }
+}
+
+task printParent {
+    doLast {
+        println parent
+    }
+}
+
+task printVersion {
+    doLast {
+        println version
+    }
+}
+
+task printPath {
+    doLast {
+        println path
+    }
+}
+
+task printDefaultTasks {
+    doLast {
+        println defaultTasks
+    }
+}
+
+task printLogger {
+    doLast {
+        println logger
+    }
+}
+
+task printLogging {
+    doLast {
+        println logging
+    }
+}
+
+task printGradle {
+    doLast {
+        println gradle
+    }
+}
+
+task printExtensions {
+    doLast {
+        println extensions
+    }
+}
+
+task printDependencyLocking {
+    doLast {
+        println dependencyLocking
     }
 }

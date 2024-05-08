@@ -1,10 +1,6 @@
-plugins {
-    id 'java-gradle-plugin'
-}
-
-group = 'com.franktranvantu'
-version = '1.0.0'
-
 subprojects {
     apply(plugin: 'java')
+
+    group = 'com.franktranvantu'
+    version = '1.0.0'
 }

@@ -1,4 +1,4 @@
 package com.franktranvantu.sourcesets;
 
-public class App {
+public class GroovyAppTest {
 }
